@@ -260,6 +260,14 @@
             margin-top: 0.5rem;
         }
 
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
         .table-controls {
             display: flex;
             gap: 1rem;
@@ -277,12 +285,13 @@
 
         table {
             width: 100%;
+            min-width: 800px;  /* Add this line to force horizontal scroll */
             border-collapse: collapse;
-            margin: 2rem 0;
+            margin: 0;  /* Change from 2rem 0 to 0 */
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: none;  /* Remove shadow from table, it's on wrapper now */
         }
 
         th, td {
@@ -471,38 +480,30 @@
             <section id="full-table">
                 <h2>Full Results Table</h2>
                 <p style="margin-bottom: 1rem; color: var(--text-light);">Data source: results.json</p>
-                
-                <div class="table-controls">
-                    <label>
-                        Sort by
-                        <select id="fullTableSort">
-                            <option value="average" selected>Average</option>
-                            <option value="model">Model Name</option>
-                        </select>
-                    </label>
-                </div>
 
-                <table id="fullResultsTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Model</th>
-                            <th>Speech</th>
-                            <th>Sound</th>
-                            <th>Music</th>
-                            <th>Spatial</th>
-                            <th>Multi-audio</th>
-                            <th>Voice-chat</th>
-                            <th>Instruction</th>
-                            <th>Average</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fullTableBody">
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table id="fullResultsTable">
+                        <thead>
+                            <!-- <tr>
+                                <th>#</th>
+                                <th>Model</th>
+                                <th>Speech</th>
+                                <th>Sound</th>
+                                <th>Music</th>
+                                <th>Spatial</th>
+                                <th>Multi-audio</th>
+                                <th>Voice-chat</th>
+                                <th>Instruction</th>
+                                <th>Average</th>
+                            </tr> -->
+                        </thead>
+                        <tbody id="fullTableBody">
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
-            <section id="analysis">
+            <!-- <section id="analysis">
                 <h2>Analysis</h2>
                 <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
                     The BASS benchmark reveals significant insights into current audio understanding capabilities. Models show varying strengths across different audio domains, with speech processing generally achieving higher accuracy than music and spatial audio understanding.
@@ -510,7 +511,7 @@
                 <p style="font-size: 1.1rem; line-height: 1.8;">
                     Multi-audio reasoning and long-form content processing remain challenging areas, highlighting opportunities for future model development. The benchmark also demonstrates that instruction-following capabilities in the audio domain lag behind those in visual and textual modalities.
                 </p>
-            </section>
+            </section> -->
 
             <!-- <section id="bibtex">
                 <h2>BibTeX</h2>
