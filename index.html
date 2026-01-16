@@ -578,7 +578,8 @@
             const tbody = document.getElementById('fullTableBody');
             const thead = document.querySelector('#fullResultsTable thead tr');
             
-            if (!window.headers || !leaderboardData) {
+            // Add these checks
+            if (!tbody || !thead || !window.headers || !leaderboardData) {
                 return;
             }
             
