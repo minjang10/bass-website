@@ -545,51 +545,59 @@
         let leaderboardData = [];
         let fullTableData = [];
 
-        // Load CSV data
-        async function loadCSVData() {
-            try {
-                const response = await fetch('data/normalized_results.csv');
-                const csvText = await response.text();
-                
-                // Parse CSV
-                const rows = csvText.split('\n').filter(row => row.trim());
-                const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
-                
-                const data = [];
-                for (let i = 1; i < rows.length; i++) {
-                    const values = rows[i].split(',').map(v => v.trim().replace(/"/g, ''));
-                    if (values.length > 1 && values[0]) {
-                        const modelName = values[0];
-                        
-                        // Create data object with all scores
-                        const rowData = {
-                            model: modelName,
-                            size: "Unknown"
-                        };
-                        
-                        // Add individual category scores
-                        headers.slice(1).forEach((header, idx) => {
-                            rowData[header] = parseFloat(values[idx + 1]) || 0;
-                        });
-                        
-                        data.push(rowData);
-                    }
-                }
-                
-                // Store original data
-                window.allData = data;
-                window.headers = headers;
-                
-                // Initial render with overall average
-                updateLeaderboard('overall');
-                renderFullTable();
-            } catch (error) {
-                console.error('Error loading CSV:', error);
-                document.getElementById('leaderboardBody').innerHTML = 
-                    '<tr><td colspan="4" style="text-align: center; color: red;">Error loading data. Please check the CSV file path.</td></tr>';
-            }
+        // 1. FIRST - Define renderLeaderboard
+        function renderLeaderboard() {
+            const tbody = document.getElementById('leaderboardBody');
+            tbody.innerHTML = leaderboardData.map(item => `
+                <tr>
+                    <td>${item.rank}</td>
+                    <td>${item.medal} ${item.model}</td>
+                    <td>${item.size}</td>
+                    <td><strong>${item.average}%</strong></td>
+                </tr>
+            `).join('');
         }
 
+        // 2. SECOND - Define renderFullTable
+        function renderFullTable() {
+            const tbody = document.getElementById('fullTableBody');
+            const thead = document.querySelector('#fullResultsTable thead tr');
+            
+            if (!window.headers || !leaderboardData) {
+                return;
+            }
+            
+            const displayHeaders = window.headers.slice(1).filter(h => h !== 'Average');
+            
+            thead.innerHTML = `
+                <th>#</th>
+                <th>Model</th>
+                ${displayHeaders.map(h => `<th>${h}</th>`).join('')}
+                <th>Average</th>
+            `;
+            
+            tbody.innerHTML = leaderboardData.map((item, idx) => {
+                const categoryScores = displayHeaders.map(h => {
+                    const value = item[h];
+                    const displayValue = typeof value === 'number' ? value.toFixed(1) : '0.0';
+                    return `<td>${displayValue}%</td>`;
+                }).join('');
+                
+                const avgValue = item['Average'] || item.average || 0;
+                const displayAvg = typeof avgValue === 'number' ? avgValue.toFixed(1) : avgValue;
+                
+                return `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${item.model}</td>
+                        ${categoryScores}
+                        <td><strong>${displayAvg}%</strong></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // 3. THIRD - Define updateLeaderboard (calls renderLeaderboard)
         function updateLeaderboard(category) {
             const taskMapping = {
                 'overall': ['Average'],
@@ -601,7 +609,6 @@
             
             const tasks = taskMapping[category];
             
-            // Calculate averages for selected category
             const dataWithAvg = window.allData.map(item => {
                 let average;
                 if (category === 'overall') {
@@ -617,10 +624,8 @@
                 };
             });
             
-            // Sort by average (descending)
             dataWithAvg.sort((a, b) => parseFloat(b.average) - parseFloat(a.average));
             
-            // Add ranks and medals
             leaderboardData = dataWithAvg.map((item, idx) => ({
                 ...item,
                 rank: idx + 1,
@@ -630,74 +635,56 @@
             renderLeaderboard();
         }
 
-        function renderFullTable() {
-            const tbody = document.getElementById('fullTableBody');
-            const thead = document.querySelector('#fullResultsTable thead tr');
-            
-            // Update headers dynamically (exclude 'Average' from middle, add at end)
-            const displayHeaders = window.headers.slice(1).filter(h => h !== 'Average');
-            
-            thead.innerHTML = `
-                <th>#</th>
-                <th>Model</th>
-                ${displayHeaders.map(h => `<th>${h}</th>`).join('')}
-                <th>Average</th>
-            `;
-            
-            tbody.innerHTML = leaderboardData.map((item, idx) => {
-                const categoryScores = displayHeaders.map(h => `<td>${item[h]?.toFixed(1) || '0.0'}%</td>`).join('');
+        // 4. FOURTH - Define loadCSVData (calls updateLeaderboard)
+        async function loadCSVData() {
+            try {
+                const response = await fetch('data/normalized_scores.csv');
+                const csvText = await response.text();
                 
-                return `
-                    <tr>
-                        <td>${idx + 1}</td>
-                        <td>${item.model}</td>
-                        ${categoryScores}
-                        <td><strong>${item['Average']?.toFixed(1) || item.average}%</strong></td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function renderFullTable() {
-            const tbody = document.getElementById('fullTableBody');
-            const thead = document.querySelector('#fullResultsTable thead tr');
-            
-            // Update headers dynamically
-            if (fullTableData.headers && fullTableData.headers.length > 0) {
-                thead.innerHTML = `
-                    <th>#</th>
-                    <th>Model</th>
-                    ${fullTableData.headers.map(h => `<th>${h}</th>`).join('')}
-                    <th>Average</th>
-                `;
+                const rows = csvText.split('\n').filter(row => row.trim());
+                const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                
+                const data = [];
+                for (let i = 1; i < rows.length; i++) {
+                    const values = rows[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                    if (values.length > 1 && values[0]) {
+                        const modelName = values[0];
+                        
+                        const rowData = {
+                            model: modelName,
+                            size: "Unknown"
+                        };
+                        
+                        headers.slice(1).forEach((header, idx) => {
+                            rowData[header] = parseFloat(values[idx + 1]) || 0;
+                        });
+                        
+                        data.push(rowData);
+                    }
+                }
+                
+                window.allData = data;
+                window.headers = headers;
+                
+                updateLeaderboard('overall');
+                renderFullTable();
+            } catch (error) {
+                console.error('Error loading CSV:', error);
+                document.getElementById('leaderboardBody').innerHTML = 
+                    '<tr><td colspan="4" style="text-align: center; color: red;">Error loading data. Please check the CSV file path.</td></tr>';
             }
-            
-            tbody.innerHTML = fullTableData.map((item, idx) => {
-                const categoryScores = fullTableData.headers 
-                    ? fullTableData.headers.map(h => `<td>${item[h]}%</td>`).join('')
-                    : '';
-                
-                return `
-                    <tr>
-                        <td>${idx + 1}</td>
-                        <td>${item.model}</td>
-                        ${categoryScores}
-                        <td><strong>${item.average}%</strong></td>
-                    </tr>
-                `;
-            }).join('');
         }
 
-        // function copyBibTeX() {
-        //    const bibtex = document.getElementById('bibtexCode').textContent;
-        //    navigator.clipboard.writeText(bibtex).then(() => {
-        //        const btn = document.querySelector('.copy-btn');
-        //        btn.textContent = '✓ Copied!';
-        //        setTimeout(() => {
-        //            btn.textContent = '📋 Copy BibTeX';
-        //        }, 2000);
-        //    });
-        // }
+        function copyBibTeX() {
+            const bibtex = document.getElementById('bibtexCode').textContent;
+            navigator.clipboard.writeText(bibtex).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = '📋 Copy BibTeX';
+                }, 2000);
+            });
+        }
 
         // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -710,10 +697,12 @@
             });
         });
 
-        // Initialize tables by loading CSV
+        // Add event listener for sort dropdown
         document.getElementById('sortBy').addEventListener('change', function(e) {
             updateLeaderboard(e.target.value);
         });
+
+        // Initialize tables by loading CSV
         loadCSVData();
     </script>
 </body>
