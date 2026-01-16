@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            margin: 0 auto 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .authors {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .authors span {
+            padding: 0.75rem 1.5rem;
+            background: #2d3748;
+            color: white;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .feature-image {
+            width: 100%;
+            margin: 3rem 0;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .placeholder-img {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        section {
+            padding: 4rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .skill-card {
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .skill-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-card h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        select {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background: #f3f4f6;
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        .medal {
+            font-size: 1.25rem;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 2rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-light);
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .skills-grid, .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="#top" class="logo">
+                BASS
+            </a>
+            <ul class="nav-links">
+                <li><a href="#abstract">Abstract</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><a href="#results">Leaderboard</a></li>
+                <li><a href="#full-table">Full Table</a></li>
+                <li><a href="#analysis">Analysis</a></li>
+                <li><a href="#bibtex">BibTeX</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section class="hero" id="top">
+                <h1>BASS</h1>
+                <p class="subtitle"><b>B</b>enchmarking <b>A</b>udio lms for musical <b>S</b>tructure and <b>S</b>emantic reasoning</p>
+                
+                <div class="button-group">
+                    <a href="#" class="btn btn-primary">📄 Download PDF</a>
+                    <a href="#" class="btn btn-secondary">🐙 Code</a>
+                    <a href="#" class="btn btn-secondary">🤗 Dataset</a>
+                </div>
+
+                <div class="authors">
+                    <span>Min Jang</span>
+                    <span>Orevaghene Ahia</span>
+                    <span>Nazif Tamer</span>
+                    <span>Sachin Kumar</span>
+                    <span>Yulia Tsvetkov</span>
+                    <span>Noah A. Smith</span>
+                </div>
+            </section>
+
+            <img src="assets/main_figure.png" alt="Main Figure" class="feature-image">
+            
+            <p style="margin: 2rem 0; font-size: 1.1rem; line-height: 1.8;">
+                Overview of the tasks included in BASS, designed to evaluate audio LMs on musical understanding requiring long-term structure or hierarchical reasoning. It contains twelve tasks across four categories: structural segmentation, structural lyrics transcription, musicological analysis, and artist collaboration.
+            </p>
+
+            <section id="abstract">
+                <h2>Abstract</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    Music understanding is a complex task that often requires reasoning over both structural and semantic elements of audio. We introduce BASS, designed to evaluate music understanding and reasoning in audio language models across four broad categories: structural segmentation, lyric transcription, musicological analysis, and artist collaboration. BASS comprises 2658 questions spanning 12 tasks, 1993 unique songs and covering over 138 hours of music from a wide range of genres and tracks, crafted to assess musicological knowledge and reasoning in real-world scenarios. We evaluate 14 open-source and frontier multimodal LMs, finding that even state-of-the-art models struggle on higher-level reasoning tasks such as structural segmentation and artist collaboration, while performing best on lyric transcription. Our analysis reveals that current models leverage linguistic priors effectively but remain limited in reasoning over musical structure, vocal, and musicological attributes. BASS provides an evaluation framework with widespread applications in music recommendation and search and has the potential to guide the development of audio LMs. 
+                </p>
+            </section>
+
+            <section id="results">
+                <h2>Model Performance — Leaderboard</h2>
+                <p style="margin-bottom: 1rem;">Sorted by overall average (desc)</p>
+                <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-light);">
+                    Medals: 🥇 🥈 🥉 for top 3 (excluding Human/Random baselines).
+                </p>
+
+                <div class="table-controls">
+                    <label>
+                        Sort by
+                        <select id="sortBy">
+                            <option value="overall" selected>Overall</option>
+                            <option value="structural-segmentation">Structural Segmentation</option>
+                            <option value="structural-lyrics-transcription">Structural Lyrics Transcription</option>
+                            <option value="musicological-analysis">Musicological Analysis</option>
+                            <option value="artist-collaboration">Artist Collaboration</option>
+                        </select>
+                    </label>
+                </div>
+
+                <table id="leaderboard">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Model</th>
+                            <th>Size</th>
+                            <th>Average (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="full-table">
+                <h2>Full Results Table</h2>
+                <p style="margin-bottom: 1rem; color: var(--text-light);">Data source: results.json</p>
+                
+                <div class="table-controls">
+                    <label>
+                        Sort by
+                        <select id="fullTableSort">
+                            <option value="average" selected>Average</option>
+                            <option value="model">Model Name</option>
+                        </select>
+                    </label>
+                </div>
+
+                <table id="fullResultsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Model</th>
+                            <th>Speech</th>
+                            <th>Sound</th>
+                            <th>Music</th>
+                            <th>Spatial</th>
+                            <th>Multi-audio</th>
+                            <th>Voice-chat</th>
+                            <th>Instruction</th>
+                            <th>Average</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fullTableBody">
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="analysis">
+                <h2>Analysis</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    The BASS benchmark reveals significant insights into current audio understanding capabilities. Models show varying strengths across different audio domains, with speech processing generally achieving higher accuracy than music and spatial audio understanding.
+                </p>
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    Multi-audio reasoning and long-form content processing remain challenging areas, highlighting opportunities for future model development. The benchmark also demonstrates that instruction-following capabilities in the audio domain lag behind those in visual and textual modalities.
+                </p>
+            </section>
+
+            <section id="bibtex">
+                <h2>BibTeX</h2>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyBibTeX()">📋 Copy BibTeX</button>
+                    <pre id="bibtexCode">@article{kumar2025mmau,
+  title={MMAU-Pro: A Challenging and Comprehensive Benchmark for Holistic Evaluation of Audio General Intelligence},
+  author={Kumar, Sonal and Sedláček, Šimon and Lokegaonkar, Vaibhavi and López, Fernando and Yu, Wenyi and Anand, Nishit and Ryu, Hyeonggon and Chen, Lichang and Plička, Maxim and Hlaváček, Miroslav and others},
+  journal={arXiv preprint arXiv:2508.13992},
+  year={2025}
+}</pre>
+                </div>
+
+                <h3 style="margin-top: 3rem;">Links & Contact</h3>
+                <ul style="list-style: none; line-height: 2;">
+                    <li>📄 Paper (PDF): <a href="https://arxiv.org/pdf/2508.13992" style="color: var(--primary-color);">Open</a></li>
+                    <li>🐙 Code: <a href="https://github.com/sonalkum/MMAUPro" style="color: var(--primary-color);">Repository</a></li>
+                    <li>🔗 Dataset: <a href="https://huggingface.co/datasets/gamma-lab-umd/MMAU-Pro" style="color: var(--primary-color);">Landing page</a></li>
+                    <li>✉️ Corresponding author: sonalkum@umd.edu</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="#top" class="back-to-top">↑ Back to Top</a>
+        </div>
+    </footer>
+
+    <script>
+        let leaderboardData = [];
+        let fullTableData = [];
+
+        // Load CSV data
+        async function loadCSVData() {
+            try {
+                const response = await fetch('data/unnormalized_results.csv');
+                const csvText = await response.text();
+                
+                // Parse CSV
+                const rows = csvText.split('\n').filter(row => row.trim());
+                const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                
+                const data = [];
+                for (let i = 1; i < rows.length; i++) {
+                    const values = rows[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                    if (values.length > 1 && values[0]) {
+                        const modelName = values[0];
+                        const scores = values.slice(1).map(v => parseFloat(v) || 0);
+                        
+                        // Calculate average
+                        const average = scores.reduce((a, b) => a + b, 0) / scores.length;
+                        
+                        // Create data object with all category scores
+                        const rowData = {
+                            model: modelName,
+                            size: "Unknown", // Add size if you have it in your data
+                            average: average.toFixed(1)
+                        };
+                        
+                        // Add individual category scores
+                        headers.slice(1).forEach((header, idx) => {
+                            rowData[header] = scores[idx].toFixed(1);
+                        });
+                        
+                        data.push(rowData);
+                    }
+                }
+                
+                // Sort by average (descending)
+                data.sort((a, b) => parseFloat(b.average) - parseFloat(a.average));
+                
+                // Add ranks and medals
+                leaderboardData = data.map((item, idx) => ({
+                    ...item,
+                    rank: idx + 1,
+                    medal: idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : ''
+                }));
+                
+                fullTableData = leaderboardData;
+                
+                // Store headers for full table
+                fullTableData.headers = headers.slice(1);
+                
+                renderLeaderboard();
+                renderFullTable();
+            } catch (error) {
+                console.error('Error loading CSV:', error);
+                document.getElementById('leaderboardBody').innerHTML = 
+                    '<tr><td colspan="4" style="text-align: center; color: red;">Error loading data. Please check the CSV file path.</td></tr>';
+            }
+        }
+
+        function renderLeaderboard() {
+            const tbody = document.getElementById('leaderboardBody');
+            tbody.innerHTML = leaderboardData.map(item => `
+                <tr>
+                    <td>${item.rank}</td>
+                    <td>${item.medal} ${item.model}</td>
+                    <td>${item.size}</td>
+                    <td><strong>${item.average}%</strong></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderFullTable() {
+            const tbody = document.getElementById('fullTableBody');
+            const thead = document.querySelector('#fullResultsTable thead tr');
+            
+            // Update headers dynamically
+            if (fullTableData.headers && fullTableData.headers.length > 0) {
+                thead.innerHTML = `
+                    <th>#</th>
+                    <th>Model</th>
+                    ${fullTableData.headers.map(h => `<th>${h}</th>`).join('')}
+                    <th>Average</th>
+                `;
+            }
+            
+            tbody.innerHTML = fullTableData.map((item, idx) => {
+                const categoryScores = fullTableData.headers 
+                    ? fullTableData.headers.map(h => `<td>${item[h]}%</td>`).join('')
+                    : '';
+                
+                return `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${item.model}</td>
+                        ${categoryScores}
+                        <td><strong>${item.average}%</strong></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function copyBibTeX() {
+            const bibtex = document.getElementById('bibtexCode').textContent;
+            navigator.clipboard.writeText(bibtex).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = '📋 Copy BibTeX';
+                }, 2000);
+            });
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Initialize tables by loading CSV
+        loadCSVData();
+    </script>
+</body>
+</html>
