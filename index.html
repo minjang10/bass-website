@@ -400,9 +400,9 @@
             </a>
             <ul class="nav-links">
                 <li><a href="#abstract">Abstract</a></li>
-                <li><a href="#stats">Stats</a></li>
                 <li><a href="#results">Leaderboard</a></li>
                 <li><a href="#full-table">Full Table</a></li>
+                <li><a href="#stats">Stats</a></li>
                 <li><a href="#analysis">Analysis</a></li>
                 <!-- <li><a href="#bibtex">BibTeX</a></li> -->
             </ul>
@@ -444,6 +444,66 @@
                 </p>
             </section>
 
+            
+            <section id="results">
+                <h2>Model Performance — Leaderboard</h2>
+                <p style="margin-bottom: 1rem;">Sorted by overall average (desc)</p>
+                <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-light);">
+                    Medals: 🥇 🥈 🥉 for top 3.
+                </p>
+                
+                <div class="table-controls">
+                    <label>
+                        Sort by
+                        <select id="sortBy">
+                            <option value="overall" selected>Overall</option>
+                            <option value="structural-lyrics-transcription">Structural Lyrics Transcription</option>
+                            <option value="structural-segmentation">Structural Segmentation</option>
+                            <option value="artist-collaboration">Artist Collaboration</option>
+                            <option value="musicological-analysis">Musicological Analysis</option>
+                        </select>
+                    </label>
+                </div>
+                
+                <table id="leaderboard">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Model</th>
+                            <th>Size</th>
+                            <th>Average (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                    </tbody>
+                </table>
+            </section>
+            
+            <section id="full-table">
+                <h2>Full Results Table</h2>
+                
+                <div class="table-wrapper">
+                    <table id="fullResultsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Model</th>
+                                <th>Speech</th>
+                                <th>Sound</th>
+                                <th>Music</th>
+                                <th>Spatial</th>
+                                <th>Multi-audio</th>
+                                <th>Voice-chat</th>
+                                <th>Instruction</th>
+                                <th>Average</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fullTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
             <section id="stats">
                 <h2>Data Statistics</h2>
                 
@@ -600,65 +660,6 @@
                                 <td><strong>0.82</strong></td>
                                 <td><strong>19.44</strong></td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section id="results">
-                <h2>Model Performance — Leaderboard</h2>
-                <p style="margin-bottom: 1rem;">Sorted by overall average (desc)</p>
-                <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-light);">
-                    Medals: 🥇 🥈 🥉 for top 3.
-                </p>
-
-                <div class="table-controls">
-                    <label>
-                        Sort by
-                        <select id="sortBy">
-                            <option value="overall" selected>Overall</option>
-                            <option value="structural-lyrics-transcription">Structural Lyrics Transcription</option>
-                            <option value="structural-segmentation">Structural Segmentation</option>
-                            <option value="artist-collaboration">Artist Collaboration</option>
-                            <option value="musicological-analysis">Musicological Analysis</option>
-                        </select>
-                    </label>
-                </div>
-
-                <table id="leaderboard">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Model</th>
-                            <th>Size</th>
-                            <th>Average (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboardBody">
-                    </tbody>
-                </table>
-            </section>
-
-            <section id="full-table">
-                <h2>Full Results Table</h2>
-
-                <div class="table-wrapper">
-                    <table id="fullResultsTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Model</th>
-                                <th>Speech</th>
-                                <th>Sound</th>
-                                <th>Music</th>
-                                <th>Spatial</th>
-                                <th>Multi-audio</th>
-                                <th>Voice-chat</th>
-                                <th>Instruction</th>
-                                <th>Average</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fullTableBody">
                         </tbody>
                     </table>
                 </div>
