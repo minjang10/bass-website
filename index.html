@@ -422,36 +422,47 @@
                 </div>
 
                 <div class="authors">
-                    <span>Min Jang</span>
-                    <span>Orevaghene Ahia</span>
+                   <span>Min Jang<sup style="font-size: 1.3em;">*</sup></span>
+                  <span>Orevaghene Ahia<sup style="font-size: 1.3em;">*</sup></span>
                     <span>Nazif Tamer</span>
                     <span>Sachin Kumar</span>
                     <span>Yulia Tsvetkov</span>
                     <span>Noah A. Smith</span>
                 </div>
+                <p style="margin-top: 0.5rem; font-size: 1.25rem; color: var(--text-light); text-align: center; font-style: italic;">
+                <sup>*</sup> Equal contribution.
+                </p>
+
+
             </section>
 
             <img src="assets/main_figure.png" alt="Main Figure" class="feature-image">
-            
-            <p style="margin: 2rem 0; font-size: 1.1rem; line-height: 1.8;">
+
+            <p style="
+                    margin: 2rem auto;
+                    max-width: 900px;
+                    font-size: 1.1rem;
+                    line-height: 1.8;
+                    text-align: center;
+                ">
                 Overview of the tasks included in BASS, designed to evaluate audio LMs on musical understanding requiring long-term structure or hierarchical reasoning. It contains twelve tasks across four categories: structural segmentation, structural lyrics transcription, musicological analysis, and artist collaboration.
             </p>
 
             <section id="abstract">
-                <h2>Abstract</h2>
+                 <h2 style="text-align: center;">Abstract</h2>
                 <p style="font-size: 1.1rem; line-height: 1.8;">
-                    Music understanding is a complex task that often requires reasoning over both structural and semantic elements of audio. We introduce BASS, designed to evaluate music understanding and reasoning in audio language models across four broad categories: structural segmentation, lyric transcription, musicological analysis, and artist collaboration. BASS comprises 2658 questions spanning 12 tasks, 1993 unique songs and covering over 138 hours of music from a wide range of genres and tracks, crafted to assess musicological knowledge and reasoning in real-world scenarios. We evaluate 14 open-source and frontier multimodal LMs, finding that even state-of-the-art models struggle on higher-level reasoning tasks such as structural segmentation and artist collaboration, while performing best on lyric transcription. Our analysis reveals that current models leverage linguistic priors effectively but remain limited in reasoning over musical structure, vocal, and musicological attributes. BASS provides an evaluation framework with widespread applications in music recommendation and search and has the potential to guide the development of audio LMs. 
+                    Music understanding is a complex task that often requires reasoning over both structural and semantic elements of audio. We introduce BASS, designed to evaluate music understanding and reasoning in audio language models across four broad categories: structural segmentation, lyric transcription, musicological analysis, and artist collaboration. BASS comprises 2658 questions spanning 12 tasks, 1993 unique songs and covering over 138 hours of music from a wide range of genres and tracks, crafted to assess musicological knowledge and reasoning in real-world scenarios. We evaluate 14 open-source and frontier multimodal LMs, finding that even state-of-the-art models struggle on higher-level reasoning tasks such as structural segmentation and artist collaboration, while performing best on lyric transcription. Our analysis reveals that current models leverage linguistic priors effectively but remain limited in reasoning over musical structure, vocal, and musicological attributes. BASS provides an evaluation framework with widespread applications in music recommendation and search and has the potential to guide the development of audio LMs.
                 </p>
             </section>
 
-            
+
             <section id="results">
-                <h2>Model Performance — Leaderboard</h2>
+                <h2 style="text-align: center;">Model Performance — Leaderboard</h2>
                 <p style="margin-bottom: 1rem;">Sorted by overall average (desc)</p>
                 <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-light);">
                     Medals: 🥇 🥈 🥉 for top 3.
                 </p>
-                
+
                 <div class="table-controls">
                     <label>
                         Sort by
@@ -464,7 +475,7 @@
                         </select>
                     </label>
                 </div>
-                
+
                 <table id="leaderboard">
                     <thead>
                         <tr>
@@ -478,10 +489,11 @@
                     </tbody>
                 </table>
             </section>
-            
+
             <section id="full-table">
-                <h2>Full Results Table</h2>
-                
+
+                <h2 style="text-align: center;">Full Results Table</h2>
+
                 <div class="table-wrapper">
                     <table id="fullResultsTable">
                         <thead>
@@ -503,10 +515,10 @@
                     </table>
                 </div>
             </section>
-            
+
             <section id="stats">
-                <h2>Data Statistics</h2>
-                
+                <h2 style="text-align: center;">Data Statistics</h2>
+
                 <div class="table-wrapper">
                     <table>
                         <thead>
@@ -574,7 +586,7 @@
                                 <td><strong>1.70</strong></td>
                                 <td><strong>10.78</strong></td>
                             </tr>
-                            
+
                             <!-- Collaboration -->
                             <tr>
                                 <td rowspan="5"><strong>Artist Collaboration</strong></td>
@@ -739,7 +751,7 @@
         function renderFullTable() {
             const tbody = document.getElementById('fullTableBody');
             const thead = document.querySelector('#fullResultsTable thead');
-            
+
             if (!tbody || !thead || !window.headers) {
                 return;
             }
@@ -748,7 +760,7 @@
                 tbody.innerHTML = '<tr><td colspan="15" style="text-align: center;">Loading data...</td></tr>';
                 return;
             }
-            
+
             // Define task categories
             const categories = {
                 'Structural Lyrics Transcription': ['Full Structural Lyrics Transcription', 'Section Structural Lyrics Transcription'],
@@ -756,14 +768,14 @@
                 'Artist Collaboration': ['Artist Counting', 'Artist Duration', 'Artist Localization', 'Artist Attribution'],
                 'Musicological Analysis': ['Single-Gene Detection', 'Pairwise-Gene Detection', 'Gene Dominance Ranking', 'Song-Level Gene Detection'],
             };
-            
+
             // Get all task headers (excluding Average)
             const displayHeaders = window.headers.slice(1).filter(h => h !== 'Average');
-            
+
             // Build category header row
             let categoryHeaderHTML = '<th rowspan="2">#</th><th rowspan="2">Model</th>';
             let taskHeaderHTML = '';
-            
+
             Object.entries(categories).forEach(([categoryName, tasks]) => {
                 const tasksInData = tasks.filter(t => displayHeaders.includes(t));
                 if (tasksInData.length > 0) {
@@ -773,22 +785,22 @@
                     });
                 }
             });
-            
+
             // Add remaining headers that don't belong to categories
             const categorizedTasks = Object.values(categories).flat();
             const uncategorizedHeaders = displayHeaders.filter(h => !categorizedTasks.includes(h));
             uncategorizedHeaders.forEach(h => {
                 categoryHeaderHTML += `<th rowspan="2">${h}</th>`;
             });
-            
+
             categoryHeaderHTML += '<th rowspan="2">Average</th>';
-            
+
             // Update table header with two rows
             thead.innerHTML = `
                 <tr>${categoryHeaderHTML}</tr>
                 <tr>${taskHeaderHTML}</tr>
             `;
-            
+
             // Build table body
             tbody.innerHTML = leaderboardData.map((item, idx) => {
                 const categoryScores = displayHeaders.map(h => {
@@ -796,10 +808,10 @@
                     const displayValue = typeof value === 'number' ? value.toFixed(1) : '0.0';
                     return `<td>${displayValue}%</td>`;
                 }).join('');
-                
+
                 const avgValue = item['Average'] || item.average || 0;
                 const displayAvg = typeof avgValue === 'number' ? avgValue.toFixed(1) : avgValue;
-                
+
                 return `
                     <tr>
                         <td>${idx + 1}</td>
@@ -820,9 +832,9 @@
                 'musicological-analysis': ['Single-Gene Detection', 'Pairwise-Gene Detection', 'Gene Dominance Ranking', 'Song-Level Gene Detection'],
                 'artist-collaboration': ['Artist Counting', 'Artist Duration', 'Artist Attribution', 'Artist Localization']
             };
-            
+
             const tasks = taskMapping[category];
-            
+
             const dataWithAvg = window.allData.map(item => {
                 let average;
                 if (category === 'overall') {
@@ -831,21 +843,21 @@
                     const scores = tasks.map(task => item[task] || 0);
                     average = scores.reduce((a, b) => a + b, 0) / scores.length;
                 }
-                
+
                 return {
                     ...item,
                     average: average.toFixed(1)
                 };
             });
-            
+
             dataWithAvg.sort((a, b) => parseFloat(b.average) - parseFloat(a.average));
-            
+
             leaderboardData = dataWithAvg.map((item, idx) => ({
                 ...item,
                 rank: idx + 1,
                 medal: idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : ''
             }));
-            
+
             renderLeaderboard();
         }
 
@@ -854,37 +866,37 @@
             try {
                 const response = await fetch('data/normalized_results.csv');
                 const csvText = await response.text();
-                
+
                 const rows = csvText.split('\n').filter(row => row.trim());
                 const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
-                
+
                 const data = [];
                 for (let i = 1; i < rows.length; i++) {
                     const values = rows[i].split(',').map(v => v.trim().replace(/"/g, ''));
                     if (values.length > 1 && values[0]) {
                         const modelName = values[0];
-                        
+
                         const rowData = {
                             model: modelName,
                             size: modelSizes[modelName] || '--'
                         };
-                        
+
                         headers.slice(1).forEach((header, idx) => {
                             rowData[header] = parseFloat(values[idx + 1]) || 0;
                         });
-                        
+
                         data.push(rowData);
                     }
                 }
-                
+
                 window.allData = data;
                 window.headers = headers;
-                
+
                 updateLeaderboard('overall');
                 renderFullTable();
             } catch (error) {
                 console.error('Error loading CSV:', error);
-                document.getElementById('leaderboardBody').innerHTML = 
+                document.getElementById('leaderboardBody').innerHTML =
                     '<tr><td colspan="4" style="text-align: center; color: red;">Error loading data. Please check the CSV file path.</td></tr>';
             }
         }
