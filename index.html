@@ -174,6 +174,13 @@
             font-weight: 500;
         }
 
+        .authors span sup {
+            font-size: 0.7em;
+            vertical-align: super;
+            line-height: 0;
+        }
+
+
         .feature-image {
             width: 100%;
             max-width: 1400px;
@@ -462,7 +469,7 @@
                 </p>
 
                 <h3>
-                    University of Washington, Ohio Statue University, Allen Institute for AI
+                    University of Washington, Ohio State University, Allen Institute for AI
                 </h3>
 
 
@@ -710,7 +717,7 @@
                 </div>
             </section>
 
-            <!-- <section id="analysis">
+            <section id="analysis">
                 <h2>Analysis</h2>
                 <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
                     The BASS benchmark reveals significant insights into current audio understanding capabilities. Models show varying strengths across different audio domains, with speech processing generally achieving higher accuracy than music and spatial audio understanding.
@@ -718,7 +725,79 @@
                 <p style="font-size: 1.1rem; line-height: 1.8;">
                     Multi-audio reasoning and long-form content processing remain challenging areas, highlighting opportunities for future model development. The benchmark also demonstrates that instruction-following capabilities in the audio domain lag behind those in visual and textual modalities.
                 </p>
-            </section> -->
+                <br><br>
+
+                <h3>Section Level Performance</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    For tasks requiring section-level understanding, models tend to perform better when required to segment the full song, instead of specific sections. This suggests that models may be leveraging early sections as context to inform their predictions on later sections.
+                </p>
+                <div style="display: flex; gap: 20px;">
+                    <img src="assets/section_accs.png" alt="Section-wise confusion matrix" style="width: 60vw">
+                    <img src="assets/section_confusion_matrix.png" alt="Section level accruacies" style="width: 25vw">
+                </div>
+
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    For structural segmentation, models perform better on sections typically appearing earlier in songs, such as the intro.
+                    However, in the structural lyrics transcription tasks, models perform worse on the intro sections, likely due to overtranscribing the shorter intro sections.
+                    This is evident in the confusion matrix, where the verse is often misclassified as the intro.
+                </p>
+
+                <br>
+                <h3>Vocal Delivery Style</h3>
+                <div style="display: flex; gap: 40px;">
+                    <img src="assets/delivery_type_accs.png" style="width: 40vw" alt="Vocal Delivery Style Confusion Matrix">
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem">
+                        Across most models, performance tends to increase when asked about rapping rather than singing. This might be due to rapping more closely resembling spoken language, which models are typically trained on
+                    </p>
+                </div>
+
+                <br>
+                <h3>Whisper Transcript + Audio LMs</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    We experimented with cascaded models, feeding in Whisper transcripts as well as the audio for the structural lyrics transcription tasks.
+                </p>
+                <div style="display: flex; gap: 40px;">
+                    <img src="assets/whisper_table.png" alt="Whisper + Audio LMs Performance" style="width: 40vw;">
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem">
+                        Models tend to perform worse when provided with the Whisper transcripts in addition to the audio input. 
+                        The errors in the Whisper transcripts may be propagating through to the final predictions, where the same
+                        issues in section confusion only make performace worse.
+                    </p>
+                </div>
+                <br>
+
+                <h3>Source Separated Audio</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    Using BS-RoFormer model, we created source separated audio inputs that only contain the vocals for the structural segmentation and structural lyrics transcription tasks.
+                </p>
+                <div style="display: flex; gap: 40px;">
+                    <img src="assets/source_separated.png" alt="Source Separated Performance" style="width: 50vw;">
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem">
+                        All tasks that showed a degradation in performance using source separated input is highlighted in red.
+                        Most significantly, the structural lyrics transcription tasks suffer from only vocal input, likely due to the presense of instruments being important context for section boundaries.
+                        Across the rest of the tasks, there is no significant performance increase from using vocals only audio.
+                    </p>
+                </div>
+                <br>
+
+                <h3>Does Reasoning Help?</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    To analyze if reasoning help models understand music, we compare the performance of Qwen3-Omni, a hybrid model that can be inferenced with thinking turned on or off.
+                </p>
+                <div style="display: flex; gap: 30px;">
+                    <img src="assets/thinking_vs_non_thinking.png" alt="Reasoning Performance" style="width: 40vw;">
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem">
+                        Tasks where reasoning significantly helps performance are highlighted in green. The table shows indicate that enabling “thinking” significantly improved model performance on 6 out of 12 tasks in BASS. We observed the largest performance gains on Artist Attribution (+24.53), Gene Attribution (+17.97), and Section Lyrics Transcription (+13.33), all of which are statistically significant (𝑝 < 0.001) after Holm-Bonferroni correction. Although tasks like Full Lyrical Transcription and (-12.77) and Gene Dominance Ranking (-2.11) show small negative performance deltas where “thinking” degrades performance, we did not find any cases of statistically significant degradation.
+                    </p>
+                </div>
+                <br>
+
+                <h3>Are LMs Reasoning or Memorizing Music</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    To investigate whether audio LMs are reasoning about music or simply retreiving memorized information from their training data, we analyze models that can take in text only input, namely Gemini 2.5 Pro, Gemini 2.5 Flash, and Qwen3-Omni.
+                    Instead of providing the audio input, we provide only the name of the song and the artist as input to the model.
+                </p>
+            </section>
 
             <!-- <section id="bibtex">
                 <h2>BibTeX</h2>
